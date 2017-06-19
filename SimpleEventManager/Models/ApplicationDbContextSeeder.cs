@@ -18,8 +18,8 @@ namespace SimpleEventManager.Models
                     {
                         Name = $"Seeded Event {i}",
                         Location = $"Seeded Location {i}",
-                        StartDate = new DateTime(2017, 7, 1, 1, 0, 0).AddHours(i),
-                        EndDate = new DateTime(2017, 7, 1, 1, 0, 0).AddHours(i).AddDays(i)
+                        StartDate = new DateTime(2017, 6, 1, 1, 0, 0).AddHours(i),
+                        EndDate = new DateTime(2017, 6, 1, 1, 0, 0).AddHours(i).AddDays(i)
                     };
                     context.Events.Add(evt);
                 }
