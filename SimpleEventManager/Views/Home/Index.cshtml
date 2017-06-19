@@ -1,31 +1,42 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<SimpleEventManager.Models.Event>
+
+@{
+    ViewBag.Title = "Home";
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Event Manager</h1>
+    <p class="lead">This is a simple web application that allows the user to perform basic CRUD operations. Events are sorted based on their Start Date in descending order.</p>
+    <p>@Html.ActionLink("Create New Event", "Create", "Events", null, new { @class = "btn btn-primary btn-lg" })</p>
 </div>
 
+<h2>Available Events</h2>
+
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <i class="glyphicon glyphicon-star-empty"> </i>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <p>Event Location: <b>@Html.DisplayFor(modelItem => item.Location)</b></p>
+                    <p>Starting on <b>@item.StartDate.ToString("dd MMMM yyyy")</b> at <b>@item.StartDate.ToString("HH:mm")</b> and ending on <b>@item.EndDate.ToString("dd MMMM yyyy")</b> at <b>@item.EndDate.ToString("HH:mm")</b></p>
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "Events", new { id = item.Id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Delete", "Delete", "Events", new { id = item.Id }, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col-lg-12">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
     </div>
 </div>

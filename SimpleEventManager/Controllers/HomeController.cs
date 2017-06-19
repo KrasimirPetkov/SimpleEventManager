@@ -1,30 +1,39 @@
-﻿using System;
+﻿using SimpleEventManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace SimpleEventManager.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
+        private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult About()
+        public ActionResult Index(int? page)
         {
-            ViewBag.Message = "Your application description page.";
+            int pageNumber = page ?? 1;
+            var events = db.Events.OrderByDescending(evt => evt.StartDate).ThenByDescending(evt => evt.EndDate).ToPagedList(pageNumber, 6);
 
-            return View();
+            return View(events);
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Krasimir Petkov";
 
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
